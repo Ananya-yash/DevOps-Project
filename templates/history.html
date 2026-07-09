@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance History{% endblock %}
+{% block subtitle %}Past attendance records{% endblock %}
+
+{% block content %}
+<div class="card">
+  {% if records %}
+    {% for record in records %}
+    <div class="history-entry">
+      <div class="history-header">
+        <div>
+          <span class="history-date">{{ record.date }}</span>
+          <span class="history-time">{{ record.time }}</span>
+        </div>
+        <form method="POST" action="{{ url_for('delete_history') }}" class="delete-form"
+              onsubmit="return confirm('Delete attendance for {{ record.date }} at {{ record.time }}?');">
+          <input type="hidden" name="date" value="{{ record.date }}">
+          <input type="hidden" name="time" value="{{ record.time }}">
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+      </div>
+      <div class="history-mini-stats">
+        <span style="color: #276749;">Present: {{ record.summary.present }}</span>
+        <span style="color: #9b2c2c;">Absent: {{ record.summary.absent }}</span>
+        <span style="color: #2b6cb0;">Total: {{ record.summary.total }}</span>
+      </div>
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for name, status in record.records.items() %}
+          <tr>
+            <td>{{ name }}</td>
+            <td>
+              {% if status == "present" %}
+              <span class="badge badge-present">Present</span>
+              {% else %}
+              <span class="badge badge-absent">Absent</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <p>No attendance records yet.</p>
+      <a href="{{ url_for('index') }}" class="btn btn-primary">Take Attendance</a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

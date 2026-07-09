@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance Summary{% endblock %}
+{% block subtitle %}Attendance submitted successfully{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div class="summary-stats">
+    <div class="stat-box present">
+      <div class="number">{{ record.summary.present }}</div>
+      <div class="label">Present</div>
+    </div>
+    <div class="stat-box absent">
+      <div class="number">{{ record.summary.absent }}</div>
+      <div class="label">Absent</div>
+    </div>
+    <div class="stat-box total">
+      <div class="number">{{ record.summary.total }}</div>
+      <div class="label">Total Students</div>
+    </div>
+  </div>
+
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>Student</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for name, status in record.records.items() %}
+      <tr>
+        <td>{{ name }}</td>
+        <td>
+          {% if status == "present" %}
+          <span class="badge badge-present">Present</span>
+          {% else %}
+          <span class="badge badge-absent">Absent</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="actions">
+  <a href="{{ url_for('index') }}" class="btn btn-primary">Take Attendance Again</a>
+  <a href="{{ url_for('history') }}" class="btn btn-secondary">View History</a>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if not students %}
+<div class="card">
+  <div class="empty-state">
+    <p>No students in the list yet.</p>
+    <a href="{{ url_for('students') }}" class="btn btn-primary">Add Students</a>
+  </div>
+</div>
+{% else %}
+<form method="POST" action="{{ url_for('submit') }}">
+  <div class="card">
+    <ul class="student-list">
+      {% for student in students %}
+      <li class="student-row">
+        <span class="student-name">{{ student }}</span>
+        <div class="status-group">
+          <label class="present">
+            <input type="radio" name="{{ student }}" value="present" checked>
+            Present
+          </label>
+          <label class="absent">
+            <input type="radio" name="{{ student }}" value="absent">
+            Absent
+          </label>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="actions">
+    <button type="submit" class="btn btn-primary">Submit Attendance</button>
+    <a href="{{ url_for('students') }}" class="btn btn-secondary">Manage Students</a>
+  </div>
+</form>
+{% endif %}
+{% endblock %}

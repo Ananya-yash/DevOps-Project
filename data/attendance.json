@@ -1,0 +1,56 @@
+[
+  {
+    "date": "2026-07-09",
+    "time": "15:32:34",
+    "records": {
+      "Alice Johnson": "present",
+      "Bob Smith": "absent",
+      "Charlie Brown": "present",
+      "Diana Prince": "present",
+      "Ethan Hunt": "present",
+      "Fiona Green": "present",
+      "George Miller": "present"
+    },
+    "summary": {
+      "present": 6,
+      "absent": 1,
+      "total": 7
+    }
+  },
+  {
+    "date": "2026-07-09",
+    "time": "15:39:12",
+    "records": {
+      "Alice Johnson": "absent",
+      "Bob Smith": "present",
+      "Charlie Brown": "absent",
+      "Diana Prince": "absent",
+      "Ethan Hunt": "absent",
+      "Fiona Green": "present",
+      "George Miller": "present"
+    },
+    "summary": {
+      "present": 3,
+      "absent": 4,
+      "total": 7
+    }
+  },
+  {
+    "date": "2026-07-09",
+    "time": "15:39:29",
+    "records": {
+      "Alice Johnson": "present",
+      "Bob Smith": "present",
+      "Charlie Brown": "present",
+      "Diana Prince": "present",
+      "Ethan Hunt": "present",
+      "Fiona Green": "present",
+      "George Miller": "present"
+    },
+    "summary": {
+      "present": 7,
+      "absent": 0,
+      "total": 7
+    }
+  }
+]
