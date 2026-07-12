@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import os
 from pathlib import Path
 
 from flask import Flask, flash, redirect, render_template, request, url_for
@@ -8,13 +9,13 @@ app = Flask(__name__)
 app.secret_key = "dev-attendance-key"
 
 DEFAULT_STUDENTS = [
-    "Alice Johnson",
-    "Bob Smith",
-    "Charlie Brown",
-    "Diana Prince",
-    "Ethan Hunt",
-    "Fiona Green",
-    "George Miller",
+    {"name": "Alice Johnson", "roll_no": 1},
+    {"name": "Bob Smith", "roll_no": 2},
+    {"name": "Charlie Brown", "roll_no": 3},
+    {"name": "Diana Prince", "roll_no": 4},
+    {"name": "Ethan Hunt", "roll_no": 5},
+    {"name": "Fiona Green", "roll_no": 6},
+    {"name": "George Miller", "roll_no": 7},
 ]
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -22,12 +23,24 @@ ATTENDANCE_FILE = DATA_DIR / "attendance.json"
 STUDENTS_FILE = DATA_DIR / "students.json"
 
 
+def get_next_roll_no(students):
+    """Get the next available roll number"""
+    if not students:
+        return 1
+    return max(student["roll_no"] for student in students) + 1
+
+
 def load_students():
     if not STUDENTS_FILE.exists():
         save_students(DEFAULT_STUDENTS)
         return list(DEFAULT_STUDENTS)
     with open(STUDENTS_FILE, encoding="utf-8") as f:
-        return json.load(f)
+        students = json.load(f)
+        # Handle old format (list of strings) by converting to new format
+        if students and isinstance(students[0], str):
+            students = [{"name": name, "roll_no": i+1} for i, name in enumerate(students)]
+            save_students(students)
+        return students
 
 
 def save_students(students):
@@ -68,7 +81,11 @@ def delete_record(date, time):
 @app.route("/")
 def index():
     students = load_students()
-    return render_template("index.html", students=students)
+    current_date = datetime.now().strftime("%A, %B %d, %Y")
+    current_time = datetime.now().strftime("%I:%M %p")
+    # Create a mapping of student names to their info for easy access
+    student_map = {s["name"]: s for s in students}
+    return render_template("index.html", students=students, student_map=student_map, current_date=current_date, current_time=current_time)
 
 
 @app.route("/submit", methods=["POST"])
@@ -80,16 +97,21 @@ def submit():
 
     records = {}
     for student in students:
-        status = request.form.get(student, "absent")
-        records[student] = status
+        student_name = student["name"]
+        status = request.form.get(student_name, "absent")
+        records[student_name] = status
 
     present_count = sum(1 for s in records.values() if s == "present")
     absent_count = len(records) - present_count
+
+    # Create student map for display
+    student_map = {s["name"]: s for s in students}
 
     record = {
         "date": datetime.now().strftime("%Y-%m-%d"),
         "time": datetime.now().strftime("%H:%M:%S"),
         "records": records,
+        "student_map": student_map,
         "summary": {
             "present": present_count,
             "absent": absent_count,
@@ -98,7 +120,7 @@ def submit():
     }
     save_record(record)
 
-    return render_template("summary.html", record=record)
+    return render_template("summary.html", record=record, student_map=student_map)
 
 
 @app.route("/students")
@@ -114,13 +136,16 @@ def add_student():
         return redirect(url_for("students"))
 
     students = load_students()
-    if name in students:
+    # Check if student name already exists
+    if any(s["name"] == name for s in students):
         flash(f'"{name}" is already in the list.', "error")
         return redirect(url_for("students"))
 
-    students.append(name)
+    # Generate next roll number
+    next_roll_no = get_next_roll_no(students)
+    students.append({"name": name, "roll_no": next_roll_no})
     save_students(students)
-    flash(f'Added "{name}".', "success")
+    flash(f'Added "{name}" with Roll No. {next_roll_no}.', "success")
     return redirect(url_for("students"))
 
 
@@ -129,7 +154,13 @@ def delete_student():
     name = request.form.get("name", "").strip()
     students = load_students()
 
-    if name not in students:
+    student_to_delete = None
+    for s in students:
+        if s["name"] == name:
+            student_to_delete = s
+            break
+
+    if student_to_delete is None:
         flash("Student not found.", "error")
         return redirect(url_for("students"))
 
@@ -137,9 +168,9 @@ def delete_student():
         flash("Cannot delete the last student.", "error")
         return redirect(url_for("students"))
 
-    students.remove(name)
+    students = [s for s in students if s["name"] != name]
     save_students(students)
-    flash(f'Deleted "{name}".', "success")
+    flash(f'Deleted "{name}" (Roll No. {student_to_delete["roll_no"]}).', "success")
     return redirect(url_for("students"))
 
 
@@ -166,6 +197,7 @@ def delete_history():
 
     return redirect(url_for("history"))
 
+port = int(os.environ.get("PORT", 8000))
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=port, debug=False)

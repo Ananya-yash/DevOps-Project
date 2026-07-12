@@ -79,9 +79,56 @@ nav a:hover {
   border-bottom: none;
 }
 
-.student-name {
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+.student-table th,
+.student-table td {
+  padding: 0.85rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.student-table th {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #718096;
+  font-weight: 600;
+  background: #f7fafc;
+}
+
+.student-table tbody tr:hover {
+  background: #f7fafc;
+}
+
+.roll-column {
+  width: 10%;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.name-column {
+  flex: 1;
   font-weight: 500;
-  font-size: 1rem;
+}
+
+.status-column {
+  width: 45%;
+}
+
+.action-column {
+  width: 15%;
+  text-align: center;
+}
+
+.status-column .status-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .status-group {
@@ -398,6 +445,26 @@ nav a:hover {
 
 .empty-state p {
   margin-bottom: 1rem;
+}
+
+/* Attendance header with date and time */
+.attendance-header {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.attendance-header h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 0.5rem;
+}
+
+.attendance-datetime {
+  color: #718096;
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 @media (max-width: 540px) {

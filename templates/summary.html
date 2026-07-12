@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block title %}Attendance Summary{% endblock %}
-{% block subtitle %}Attendance submitted successfully{% endblock %}
 
 {% block content %}
 <div class="card">
@@ -23,6 +22,7 @@
   <table class="summary-table">
     <thead>
       <tr>
+        <th>Roll No.</th>
         <th>Student</th>
         <th>Status</th>
       </tr>
@@ -30,6 +30,7 @@
     <tbody>
       {% for name, status in record.records.items() %}
       <tr>
+        <td>{{ student_map[name].roll_no }}</td>
         <td>{{ name }}</td>
         <td>
           {% if status == "present" %}

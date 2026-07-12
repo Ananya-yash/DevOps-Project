@@ -28,6 +28,7 @@
       <table class="summary-table">
         <thead>
           <tr>
+            <th>Roll No.</th>
             <th>Student</th>
             <th>Status</th>
           </tr>
@@ -35,6 +36,11 @@
         <tbody>
           {% for name, status in record.records.items() %}
           <tr>
+            {% if record.student_map and record.student_map[name] %}
+            <td>{{ record.student_map[name].roll_no }}</td>
+            {% else %}
+            <td>-</td>
+            {% endif %}
             <td>{{ name }}</td>
             <td>
               {% if status == "present" %}
