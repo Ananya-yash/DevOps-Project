@@ -12,7 +12,7 @@
 <div class="card">
   <div class="empty-state">
     <p>No students in the list yet.</p>
-    <a href="{{ url_for('students') }}" class="btn btn-primary">Add Students</a>
+    <a href="{{ url_for('manage_students') }}" class="btn btn-primary">Add Students</a>
   </div>
 </div>
 {% else %}
@@ -51,7 +51,7 @@
 
   <div class="actions">
     <button type="submit" class="btn btn-primary">Submit Attendance</button>
-    <a href="{{ url_for('students') }}" class="btn btn-secondary">Manage Students</a>
+    <a href="{{ url_for('manage_students') }}" class="btn btn-secondary">Manage Students</a>
   </div>
 </form>
 {% endif %}

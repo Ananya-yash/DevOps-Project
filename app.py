@@ -93,7 +93,7 @@ def submit():
     students = load_students()
     if not students:
         flash("Add at least one student before submitting attendance.", "error")
-        return redirect(url_for("students"))
+        return redirect(url_for("manage_students"))
 
     records = {}
     for student in students:
@@ -133,20 +133,20 @@ def add_student():
     name = request.form.get("name", "").strip()
     if not name:
         flash("Please enter a student name.", "error")
-        return redirect(url_for("students"))
+        return redirect(url_for("manage_students"))
 
     students = load_students()
     # Check if student name already exists
     if any(s["name"] == name for s in students):
         flash(f'"{name}" is already in the list.', "error")
-        return redirect(url_for("students"))
+        return redirect(url_for("manage_students"))
 
     # Generate next roll number
     next_roll_no = get_next_roll_no(students)
     students.append({"name": name, "roll_no": next_roll_no})
     save_students(students)
     flash(f'Added "{name}" with Roll No. {next_roll_no}.', "success")
-    return redirect(url_for("students"))
+    return redirect(url_for("manage_students"))
 
 
 @app.route("/students/delete", methods=["POST"])
@@ -162,16 +162,16 @@ def delete_student():
 
     if student_to_delete is None:
         flash("Student not found.", "error")
-        return redirect(url_for("students"))
+        return redirect(url_for("manage_students"))
 
     if len(students) <= 1:
         flash("Cannot delete the last student.", "error")
-        return redirect(url_for("students"))
+        return redirect(url_for("manage_students"))
 
     students = [s for s in students if s["name"] != name]
     save_students(students)
     flash(f'Deleted "{name}" (Roll No. {student_to_delete["roll_no"]}).', "success")
-    return redirect(url_for("students"))
+    return redirect(url_for("manage_students"))
 
 
 @app.route("/history")
@@ -188,14 +188,36 @@ def delete_history():
 
     if not date or not time:
         flash("Invalid attendance record.", "error")
-        return redirect(url_for("history"))
+        return redirect(url_for("view_history"))
 
     if delete_record(date, time):
         flash(f"Deleted attendance for {date} at {time}.", "success")
     else:
         flash("Attendance record not found.", "error")
 
-    return redirect(url_for("history"))
+    return redirect(url_for("view_history"))
+
+@app.route("/take-attendance")
+def take_attendance():
+    students = load_students()
+    current_date = datetime.now().strftime("%A, %B %d, %Y")
+    current_time = datetime.now().strftime("%I:%M %p")
+    student_map = {s["name"]: s for s in students}
+    return render_template("index.html", students=students, student_map=student_map, current_date=current_date, current_time=current_time)
+
+
+@app.route("/manage-students")
+def manage_students():
+    students = load_students()
+    return render_template("students.html", students=students)
+
+
+@app.route("/view-history")
+def view_history():
+    records = load_records()
+    records = list(reversed(records))
+    return render_template("history.html", records=records)
+
 
 port = int(os.environ.get("PORT", 8000))
 
