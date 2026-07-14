@@ -1,1 +1,128 @@
-[]
+[
+  {
+    "date": "2026-07-14",
+    "time": "19:37:59",
+    "records": {
+      "Alice Johnson": "present",
+      "Sneha Pillai": "present",
+      "Shreya Dimri": "present",
+      "Prakhar": "absent",
+      "Kushagr": "present",
+      "Tushar": "present",
+      "Akhand": "absent",
+      "Tanay Srivastava": "absent",
+      "Ali Yaseen": "present",
+      "Aditya Srivastava": "present"
+    },
+    "student_map": {
+      "Alice Johnson": {
+        "name": "Alice Johnson",
+        "roll_no": 1
+      },
+      "Sneha Pillai": {
+        "name": "Sneha Pillai",
+        "roll_no": 2
+      },
+      "Shreya Dimri": {
+        "name": "Shreya Dimri",
+        "roll_no": 3
+      },
+      "Prakhar": {
+        "name": "Prakhar",
+        "roll_no": 4
+      },
+      "Kushagr": {
+        "name": "Kushagr",
+        "roll_no": 5
+      },
+      "Tushar": {
+        "name": "Tushar",
+        "roll_no": 6
+      },
+      "Akhand": {
+        "name": "Akhand",
+        "roll_no": 7
+      },
+      "Tanay Srivastava": {
+        "name": "Tanay Srivastava",
+        "roll_no": 8
+      },
+      "Ali Yaseen": {
+        "name": "Ali Yaseen",
+        "roll_no": 9
+      },
+      "Aditya Srivastava": {
+        "name": "Aditya Srivastava",
+        "roll_no": 10
+      }
+    },
+    "summary": {
+      "present": 7,
+      "absent": 3,
+      "total": 10
+    }
+  },
+  {
+    "date": "2026-07-14",
+    "time": "20:00:32",
+    "records": {
+      "Alice Johnson": "present",
+      "Sneha Pillai": "present",
+      "Shreya Dimri": "present",
+      "Prakhar": "present",
+      "Kushagr": "present",
+      "Tushar": "absent",
+      "Akhand": "absent",
+      "Tanay Srivastava": "present",
+      "Ali Yaseen": "present",
+      "Aditya Srivastava": "present"
+    },
+    "student_map": {
+      "Alice Johnson": {
+        "name": "Alice Johnson",
+        "roll_no": 1
+      },
+      "Sneha Pillai": {
+        "name": "Sneha Pillai",
+        "roll_no": 2
+      },
+      "Shreya Dimri": {
+        "name": "Shreya Dimri",
+        "roll_no": 3
+      },
+      "Prakhar": {
+        "name": "Prakhar",
+        "roll_no": 4
+      },
+      "Kushagr": {
+        "name": "Kushagr",
+        "roll_no": 5
+      },
+      "Tushar": {
+        "name": "Tushar",
+        "roll_no": 6
+      },
+      "Akhand": {
+        "name": "Akhand",
+        "roll_no": 7
+      },
+      "Tanay Srivastava": {
+        "name": "Tanay Srivastava",
+        "roll_no": 8
+      },
+      "Ali Yaseen": {
+        "name": "Ali Yaseen",
+        "roll_no": 9
+      },
+      "Aditya Srivastava": {
+        "name": "Aditya Srivastava",
+        "roll_no": 10
+      }
+    },
+    "summary": {
+      "present": 8,
+      "absent": 2,
+      "total": 10
+    }
+  }
+]

@@ -78,6 +78,41 @@ def delete_record(date, time):
     return True
 
 
+def get_attendance_stats():
+    students = load_students()
+    records = load_records()
+    
+    stats = []
+    for student in students:
+        name = student["name"]
+        roll_no = student["roll_no"]
+        present_count = 0
+        absent_count = 0
+        
+        for r in records:
+            if "records" in r and name in r["records"]:
+                status = r["records"][name]
+                if status == "present":
+                    present_count += 1
+                elif status == "absent":
+                    absent_count += 1
+        
+        total = present_count + absent_count
+        attendance_percentage = 0.0
+        if total > 0:
+            attendance_percentage = (present_count / total) * 100
+            
+        stats.append({
+            "roll_no": roll_no,
+            "name": name,
+            "present": present_count,
+            "absent": absent_count,
+            "percentage_val": attendance_percentage,
+            "percentage": f"{attendance_percentage:.1f}%"
+        })
+    return stats
+
+
 @app.route("/")
 def index():
     students = load_students()
@@ -178,7 +213,8 @@ def delete_student():
 def history():
     records = load_records()
     records = list(reversed(records))
-    return render_template("history.html", records=records)
+    stats = get_attendance_stats()
+    return render_template("history.html", records=records, stats=stats)
 
 
 @app.route("/history/delete", methods=["POST"])
@@ -216,7 +252,8 @@ def manage_students():
 def view_history():
     records = load_records()
     records = list(reversed(records))
-    return render_template("history.html", records=records)
+    stats = get_attendance_stats()
+    return render_template("history.html", records=records, stats=stats)
 
 
 port = int(os.environ.get("PORT", 8000))

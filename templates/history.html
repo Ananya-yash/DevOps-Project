@@ -4,6 +4,48 @@
 {% block subtitle %}Past attendance records{% endblock %}
 
 {% block content %}
+{% if records and stats %}
+<div class="card" style="margin-bottom: 2rem;">
+  <h3 style="margin-bottom: 1.25rem; color: #2d3748; display: flex; align-items: center; gap: 0.5rem; font-size: 1.25rem; border-bottom: 2px solid #edf2f7; padding-bottom: 0.75rem;">
+    📊 Student Attendance Statistics
+  </h3>
+  <div style="overflow-x: auto;">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th style="width: 20%;">Student ID</th>
+          <th>Name</th>
+          <th style="width: 15%; text-align: center;">Present</th>
+          <th style="width: 15%; text-align: center;">Absent</th>
+          <th style="width: 20%; text-align: center;">Attendance %</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for stat in stats %}
+        <tr>
+          <td style="font-weight: 600; color: #4a5568;">{{ stat.roll_no }}</td>
+          <td style="font-weight: 500; color: #2d3748;">{{ stat.name }}</td>
+          <td style="text-align: center; color: #38a169; font-weight: 600;">{{ stat.present }}</td>
+          <td style="text-align: center; color: #e53e3e; font-weight: 600;">{{ stat.absent }}</td>
+          <td style="text-align: center;">
+            {% if stat.present + stat.absent > 0 %}
+              {% if stat.percentage_val >= 75.0 %}
+              <span class="badge badge-present">{{ stat.percentage }}</span>
+              {% else %}
+              <span class="badge badge-absent">{{ stat.percentage }}</span>
+              {% endif %}
+            {% else %}
+              <span class="badge" style="background: #edf2f7; color: #718096;">0.0%</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
 <div class="card">
   {% if records %}
     {% for record in records %}
